@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface DetectedField {
   uuid: string;
-  type: 'text' | 'checkbox' | 'signature' | 'date' | 'number';
+  type: 'text' | 'checkbox' | 'date' | 'number';
   required: boolean;
   preferences: Record<string, any>;
   areas: Array<{
@@ -110,8 +110,8 @@ export class DetectFields {
     // Convert to API format
     const detectedFields = sortedFields.map((field) => ({
       uuid: uuidv4(),
-      type: field.type,
-      required: field.type === 'signature',
+      type: field.type as 'text' | 'checkbox', // Only text and checkbox are detected by the model
+      required: false, // Can be set based on business logic
       preferences: {},
       areas: [
         {
@@ -152,12 +152,13 @@ export class DetectFields {
 
   /**
    * Determine field type from context (for future PDF support)
+   * Note: Currently only 'text' and 'checkbox' are detected by the ONNX model.
+   * This method is prepared for future enhancement when PDF context is available.
    */
-  private typeFromContext(prevText: string, fieldType: string): string {
-    if (fieldType !== 'text') return fieldType;
+  private typeFromContext(prevText: string, fieldType: string): 'text' | 'checkbox' | 'date' | 'number' {
+    if (fieldType !== 'text') return fieldType as 'checkbox';
 
     if (DetectFields.DATE_REGEXP.test(prevText)) return 'date';
-    if (DetectFields.SIGNATURE_REGEXP.test(prevText)) return 'signature';
     if (DetectFields.NUMBER_REGEXP.test(prevText)) return 'number';
 
     return 'text';

@@ -2,7 +2,7 @@
  * REST API Server for OCR Service
  */
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -244,7 +244,8 @@ app.post(
 );
 
 // Error handler
-app.use((err: any, req: Request, res: Response, next: any) => {
+// Note: 'next' parameter is required for Express to recognize this as an error handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   logger.error('Unhandled error', {
     error: err.message,
     stack: err.stack,

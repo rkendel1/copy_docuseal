@@ -344,9 +344,13 @@ export class ImageToFields {
     confidence: number,
     resolution: number
   ): Promise<Detections> {
-    // Simplified v2 implementation
-    // Full implementation would handle split pages and different output format
-    throw new Error('Model v2 not fully implemented yet');
+    // Model v2 support is not yet implemented in TypeScript version.
+    // Please use v1 models for now. Model v1 uses 'input' tensor name,
+    // while v2 uses 'images' and 'orig_target_sizes'.
+    throw new Error(
+      'Model v2 is not yet supported. Please use v1 models (model_704_int8.onnx) for now. ' +
+      'V2 support will be added in a future update.'
+    );
   }
 
   /**
