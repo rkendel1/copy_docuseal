@@ -161,9 +161,11 @@ export class DetectFields {
   /**
    * Determine field type from context
    * 
-   * Note: This method is reserved for future PDF support when text context will be available.
+   * TODO: This method is reserved for future PDF support when text context will be available.
    * Currently only 'text' and 'checkbox' are detected by the ONNX model, but this method
    * is prepared to infer 'date' and 'number' types based on surrounding text labels.
+   * 
+   * Implementation will be activated when PDF processing is added to processImageAttachment.
    * 
    * @param prevText - Text content preceding the field (from PDF text extraction)
    * @param fieldType - Base field type detected by the model
