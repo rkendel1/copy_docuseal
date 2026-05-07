@@ -22,7 +22,15 @@ export interface DetectedField {
 }
 
 export interface DetectFieldsOptions extends InferenceOptions {
+  /** 
+   * Enable field type inference from context (for future PDF support)
+   * Currently unused - reserved for when PDF text extraction is implemented
+   */
   regexpType?: boolean;
+  /** 
+   * Target specific page number for processing (null = all pages)
+   * Currently only page 0 is supported for image files
+   */
   pageNumber?: number | null;
 }
 
@@ -151,9 +159,15 @@ export class DetectFields {
   }
 
   /**
-   * Determine field type from context (for future PDF support)
-   * Note: Currently only 'text' and 'checkbox' are detected by the ONNX model.
-   * This method is prepared for future enhancement when PDF context is available.
+   * Determine field type from context
+   * 
+   * Note: This method is reserved for future PDF support when text context will be available.
+   * Currently only 'text' and 'checkbox' are detected by the ONNX model, but this method
+   * is prepared to infer 'date' and 'number' types based on surrounding text labels.
+   * 
+   * @param prevText - Text content preceding the field (from PDF text extraction)
+   * @param fieldType - Base field type detected by the model
+   * @returns Inferred field type
    */
   private typeFromContext(prevText: string, fieldType: string): 'text' | 'checkbox' | 'date' | 'number' {
     if (fieldType !== 'text') return fieldType as 'checkbox';

@@ -244,8 +244,9 @@ app.post(
 );
 
 // Error handler
-// Note: 'next' parameter is required for Express to recognize this as an error handler
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+// Note: '_next' parameter is required for Express to recognize this as an error handler
+// It's unused but must be present, hence the underscore prefix
+app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
   logger.error('Unhandled error', {
     error: err.message,
     stack: err.stack,
